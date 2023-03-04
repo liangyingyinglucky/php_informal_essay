@@ -1,0 +1,74 @@
+作者：小汤圆
+
+本机环境：mac  laravel5.8
+
+baum github地址：https://github.com/etrepat/baum
+
+1 安装：
+composer require "baum/baum:~1.1"
+
+2. 增加 provider
+   修改 config/app.php 文件，在 providers 数组中添加：
+   'Baum\Providers\BaumServiceProvider',
+
+3 准备表结构
+php artisan baum:install 表名称
+如果这一步报错：
+ReflectionException : Method Baum\Console\InstallCommand::handle() does not
+将fire方法改成handle
+如果遇到类似这种错误Symfony\Component\Debug\Exception\FatalThrowableError: Call to undefined method Illuminate\Events\Dispatcher::fire()
+就修改这个文件下的fire  将fire改成dispatch
+图片: https://uploader.shimo.im/f/iJgt8JbkeloOExho.png!thumbnail?accessToken=eyJhbGciOiJIUzI1NiIsImtpZCI6ImRlZmF1bHQiLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE2Nzc4OTk1NTQsImZpbGVHVUlEIjoiZGtSS2t5eHM0TjB4Yk1tTSIsImlhdCI6MTY3Nzg5OTI1NCwiaXNzIjoidXBsb2FkZXJfYWNjZXNzX3Jlc291cmNlIiwidXNlcklkIjoxNzE1MjE1MX0.jX_OhOohg0ZE1Wc2Wr_dJu8AI7Oo5QtbRF926eCLNeI
+
+会生成一个Migration文件，然后修改生成的表结构，但不能少这几个字段 父ID （parent_id ）左边界（lft）右边界（rgt）深度（depth），在这个基础上增加你想要的字段。
+然后修改好了后，执行：php artisan migrate
+图片: https://uploader.shimo.im/f/V5grO8QGEdsFiP7K.png!thumbnail?accessToken=eyJhbGciOiJIUzI1NiIsImtpZCI6ImRlZmF1bHQiLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE2Nzc4OTk1NTQsImZpbGVHVUlEIjoiZGtSS2t5eHM0TjB4Yk1tTSIsImlhdCI6MTY3Nzg5OTI1NCwiaXNzIjoidXBsb2FkZXJfYWNjZXNzX3Jlc291cmNlIiwidXNlcklkIjoxNzE1MjE1MX0.jX_OhOohg0ZE1Wc2Wr_dJu8AI7Oo5QtbRF926eCLNeI
+
+4 创建model
+继承 Baum\Node
+图片: https://uploader.shimo.im/f/hXSnZIfmgOcsgXu2.png!thumbnail?accessToken=eyJhbGciOiJIUzI1NiIsImtpZCI6ImRlZmF1bHQiLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE2Nzc4OTk1NTQsImZpbGVHVUlEIjoiZGtSS2t5eHM0TjB4Yk1tTSIsImlhdCI6MTY3Nzg5OTI1NCwiaXNzIjoidXBsb2FkZXJfYWNjZXNzX3Jlc291cmNlIiwidXNlcklkIjoxNzE1MjE1MX0.jX_OhOohg0ZE1Wc2Wr_dJu8AI7Oo5QtbRF926eCLNeI
+里面的属性值都可以重写，根据自己的实际情况来。
+
+5 尝试使用
+创建一个controller
+《1》批量创建
+图片: https://uploader.shimo.im/f/rYfczn5ic4INwZ63.png!thumbnail?accessToken=eyJhbGciOiJIUzI1NiIsImtpZCI6ImRlZmF1bHQiLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE2Nzc4OTk1NTQsImZpbGVHVUlEIjoiZGtSS2t5eHM0TjB4Yk1tTSIsImlhdCI6MTY3Nzg5OTI1NCwiaXNzIjoidXBsb2FkZXJfYWNjZXNzX3Jlc291cmNlIiwidXNlcklkIjoxNzE1MjE1MX0.jX_OhOohg0ZE1Wc2Wr_dJu8AI7Oo5QtbRF926eCLNeI
+执行成功后，数据库文件如下：
+图片: https://uploader.shimo.im/f/IL0lCWWXj9gk7IeE.png!thumbnail?accessToken=eyJhbGciOiJIUzI1NiIsImtpZCI6ImRlZmF1bHQiLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE2Nzc4OTk1NTQsImZpbGVHVUlEIjoiZGtSS2t5eHM0TjB4Yk1tTSIsImlhdCI6MTY3Nzg5OTI1NCwiaXNzIjoidXBsb2FkZXJfYWNjZXNzX3Jlc291cmNlIiwidXNlcklkIjoxNzE1MjE1MX0.jX_OhOohg0ZE1Wc2Wr_dJu8AI7Oo5QtbRF926eCLNeI
+红圈里面是自动生成的，不需要人工维护。
+《2》单个创建
+图片: https://uploader.shimo.im/f/YGV59bVGo88OWsmk.png!thumbnail?accessToken=eyJhbGciOiJIUzI1NiIsImtpZCI6ImRlZmF1bHQiLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE2Nzc4OTk1NTQsImZpbGVHVUlEIjoiZGtSS2t5eHM0TjB4Yk1tTSIsImlhdCI6MTY3Nzg5OTI1NCwiaXNzIjoidXBsb2FkZXJfYWNjZXNzX3Jlc291cmNlIiwidXNlcklkIjoxNzE1MjE1MX0.jX_OhOohg0ZE1Wc2Wr_dJu8AI7Oo5QtbRF926eCLNeI
+图片: https://uploader.shimo.im/f/pfDY2WryN1YI2BG3.png!thumbnail?accessToken=eyJhbGciOiJIUzI1NiIsImtpZCI6ImRlZmF1bHQiLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE2Nzc4OTk1NTQsImZpbGVHVUlEIjoiZGtSS2t5eHM0TjB4Yk1tTSIsImlhdCI6MTY3Nzg5OTI1NCwiaXNzIjoidXBsb2FkZXJfYWNjZXNzX3Jlc291cmNlIiwidXNlcklkIjoxNzE1MjE1MX0.jX_OhOohg0ZE1Wc2Wr_dJu8AI7Oo5QtbRF926eCLNeI
+其他创建方式，看文档。
+
+6 使用节点
+图片: https://uploader.shimo.im/f/x6FHFwBIEeEKLNZ2.png!thumbnail?accessToken=eyJhbGciOiJIUzI1NiIsImtpZCI6ImRlZmF1bHQiLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE2Nzc4OTk1NTQsImZpbGVHVUlEIjoiZGtSS2t5eHM0TjB4Yk1tTSIsImlhdCI6MTY3Nzg5OTI1NCwiaXNzIjoidXBsb2FkZXJfYWNjZXNzX3Jlc291cmNlIiwidXNlcklkIjoxNzE1MjE1MX0.jX_OhOohg0ZE1Wc2Wr_dJu8AI7Oo5QtbRF926eCLNeI
+节点的其他操作方法：
+图片: https://uploader.shimo.im/f/0gUGXAcAugwmBvG5.png!thumbnail?accessToken=eyJhbGciOiJIUzI1NiIsImtpZCI6ImRlZmF1bHQiLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE2Nzc4OTk1NTQsImZpbGVHVUlEIjoiZGtSS2t5eHM0TjB4Yk1tTSIsImlhdCI6MTY3Nzg5OTI1NCwiaXNzIjoidXBsb2FkZXJfYWNjZXNzX3Jlc291cmNlIiwidXNlcklkIjoxNzE1MjE1MX0.jX_OhOohg0ZE1Wc2Wr_dJu8AI7Oo5QtbRF926eCLNeI
+图片: https://uploader.shimo.im/f/Bqd1SdWF9JsmZOy2.png!thumbnail?accessToken=eyJhbGciOiJIUzI1NiIsImtpZCI6ImRlZmF1bHQiLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE2Nzc4OTk1NTQsImZpbGVHVUlEIjoiZGtSS2t5eHM0TjB4Yk1tTSIsImlhdCI6MTY3Nzg5OTI1NCwiaXNzIjoidXBsb2FkZXJfYWNjZXNzX3Jlc291cmNlIiwidXNlcklkIjoxNzE1MjE1MX0.jX_OhOohg0ZE1Wc2Wr_dJu8AI7Oo5QtbRF926eCLNeI
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

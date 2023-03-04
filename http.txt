@@ -1,0 +1,124 @@
+http 应用层
+
+1.http是建立在tcp/ip协议上的无状态无连接
+
+    状态行
+    请求头
+    消息主体
+
+2.发送数据的方式：
+    get 长度和大小有限制
+    post
+    put
+    delete
+
+3.post数据提交方式：
+    application/x-www-form-urlencoded -- 一般默认的提交方式
+    multipart/form-data --- 上传文件的
+    application/json -- ajax
+    text/xml -- xml
+    application/x-protobuf -- 二进制
+
+4.响应报文
+状态行
+响应头
+响应正文
+
+5 状态码
+    200 请求成功
+    301 请求永久重定向
+    302 临时重定向
+    304 文件未修改
+    400 请求有语法错误
+    401 请求未授权
+    403 拒绝服务
+    404 资源不存在
+    500 服务器发生错误
+    503 当前不能处理请求
+
+6 持久连接
+    Connection: Keep-Alive 打开持久连接
+    Connection: close  关闭持久连接
+
+7 如何防范 CSRF 攻击
+    post方法提交数据
+    验证码
+    检测referer
+    token
+
+
+8 如何防御 XSS 攻击
+    输入输出过滤
+
+tcp 传输层
+
+1 tcp是一种面向连接的可靠的字节流服务。传输控制协议
+
+2 三次握手
+    syn = 1 seq = x  syn_send
+    syn = 1 ack = 1 seq = y acknum = x+1  syn_rcvd
+    ack = a  acknum = y+1  established 已建立连接
+
+
+3 四次挥手
+    fin= 1 seq = x fin_wait_1
+    ack = 1 ackmun = x+1  close_wait
+    fin = 1 seq = y last_ack 最后确定状态
+    ack = 1 acknum = y+1 closed
+
+    ack 确认标志
+    syn 同步标志
+    fin 结束标志
+
+
+5 确认应答机制
+  每一个ack都带有对应的确认序列号，已经接受到了那些数据，下次数据应该从哪里发
+
+6 超时重传机制（动态计算超时时间）
+没有收到来自服务端的确认信息在一段时间后就会认为是没有传输到，这个时候就会进行重新传递
+
+7 快速重传机制
+
+
+udp 用户数据报协议  基于非连接
+
+少量数据  不可靠  快
+
+
+socket 套接字
+主要解决数据如何在网络中传输
+Socket ={(IP地址1:PORT端口号)，(IP地址2:PORT端口号)}
+
+
+流套接字：tcp
+数据报套接字：udp
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
